@@ -1,0 +1,109 @@
+import React, { Component } from 'react';
+import { StatusBar, StyleSheet, View, TextInput, Text, Image, ScrollView, Alert, ActivityIndicator, FlatList, TouchableOpacity } from 'react-native';
+import Data from '../components/data'
+import { connect } from 'react-redux';
+import { getBooks } from '../redux/actions/book';
+
+class HomeScreen extends Component {
+  state = {
+    books: [],
+    index:''
+  };
+  componentDidMount = async () => {
+    await this.props.dispatch(getBooks());
+    this.setState({
+      books: this.props.book,
+    });
+  };
+  render() {
+    console.log(this.props.book.bookList);
+    return (
+      <ScrollView>
+        <View>
+          <StatusBar backgroundColor='#f0f0f0' barStyle='dark-content' />
+          <View style={styles.searchBar}>
+            <TextInput style={{ marginLeft: 10, marginRight: 25 }}
+              placeholder="Search..." />
+          </View>
+          <View style={styles.FlatList}>
+            <FlatList
+              data={this.props.book.bookList}
+              numColumns={2}
+              onEndReachedThreshold={0.2}
+              keyExtractor={(item) => item.bookid.toString()}
+              renderItem={({ item, index }) => {
+                console.log(item.bookid)
+                return (
+                  <TouchableOpacity onPress={() => {this.props.navigation.navigate('BookDetails', item)}}>
+                  <View style={styles.item} key={index}>
+                    <Image style={styles.image} source={{ uri: `${item.image}` }} />
+                    <Text numberOfLines={1} style={styles.textTitle}>{item.name}</Text>
+                  </View>
+                  </TouchableOpacity>
+                );
+              }
+              }>
+            </FlatList>
+          </View>
+        </View>
+      </ScrollView>
+    );
+  }
+}
+const mapStateToProps = state => {
+  return {
+      book: state.book,
+  };
+};
+
+export default connect(mapStateToProps)(HomeScreen);
+const styles = StyleSheet.create({
+  searchBar: {
+    zIndex: 1,
+    backgroundColor: '#fff',
+    paddingLeft: 15,
+    borderBottomColor: 'transparent',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.34,
+    shadowRadius: 6.27,
+
+    elevation: 5,
+    marginTop: 10,
+    marginBottom: 7,
+    alignSelf: 'center',
+    height: 45,
+    width: 307,
+    position: 'relative',
+    borderRadius: 20
+  },
+
+  FlatList: {
+    alignSelf: 'center',
+  },
+
+  item: {
+    backgroundColor: 'black',
+    margin: 5,
+    borderRadius: 8,
+    elevation: 6,
+    width: 150,
+    height: 215,
+  },
+
+  textTitle: {
+    fontSize: 10,
+    color: 'white',
+    alignSelf: 'center',
+    paddingBottom: 3,
+
+  },
+  image: {
+    width: 150,
+    height: 200,
+    borderRadius: 10,
+  }
+})
