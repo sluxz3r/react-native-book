@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text, View, Image, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { Button } from 'native-base';
+import { View, Image, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { Text, Button } from 'native-base';
 
 export default class BookDetails extends React.Component {
   constructor(props) {
@@ -19,15 +19,21 @@ export default class BookDetails extends React.Component {
   render() {
     return (
       <View>
-        <View style={{ flex: 1, flexDirection: 'row', position:'relative', padding:10}}>
+        <View style={styles.container}>
           <Image style={styles.image} source={{ uri: `${this.state.image}` }} />
-          <View style={{ flexDirection: 'column', flex: 1, paddingLeft: 10 }}>
-            <Text style={{fontSize:18, fontWeight:'bold'}}>{this.state.name}</Text>
-            <Text>By {this.state.writer}</Text>
-             {this.state.status == 1 ? (<Button><Text>Not Available</Text></Button>) : (<Button  style={{backgroundColor:'black', alignSelf:'center', width:120, height:20}}><Text  style={{color:'white'}}>Available</Text></Button>)}
-             { this.state.user != null ? (<Text></Text>):(
-             <Button><Text>Borrow</Text></Button>)}
-             
+          <View style={styles.textLeft}>
+            <Text style={styles.name}>{this.state.name}</Text>
+            <Text style={styles.writer}>By {this.state.writer}</Text>
+            {this.state.status == 1 ?
+              (<Button style={styles.status}><Text>Not Available</Text></Button>) :
+              (<Button style={styles.status}>
+                <Text >Available</Text>
+              </Button>)}
+            {this.state.user != null ? (<Text></Text>) : (
+              <Button style={styles.borrow}>
+                <Text>Borrow</Text>
+              </Button>)}
+
           </View>
         </View>
         <Text style={styles.des}>{this.state.des}</Text>
@@ -37,14 +43,47 @@ export default class BookDetails extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  container:{
+    flex: 1, 
+    flexDirection: 'row', 
+    position: 'relative',
+     padding: 20
+  },
+  textLeft:{
+    flexDirection: 'column',
+    flex: 1,
+    paddingLeft: 10
+  },
   image: {
     width: 90,
     height: 140,
     borderRadius: 10,
   },
-  des:{
-    marginTop: 130,
-    padding:10,
-    textAlign:'justify'
+  name:{
+    fontSize: 22,
+    fontWeight: 'bold'
+  },
+  writer:{
+    fontSize: 18,
+    paddingBottom: 10
+  },
+  status:{
+    backgroundColor: '#428bff',
+    width: 140,
+    height:30,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  borrow:{
+    backgroundColor: '#df42ff',
+    width: 140,
+    height: 30,
+    marginTop:8,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  des: {
+    marginTop: 100,
+    padding: 20,
   }
 })

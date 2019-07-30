@@ -4,6 +4,7 @@ import {
   createStackNavigator,
   createBottomTabNavigator,
   createAppContainer,
+  TabBarBottomKeyboardAware
 } from 'react-navigation';
 
 import HomeScreen from '../screens/HomeScreen';
@@ -104,6 +105,10 @@ const switchNavigator = createBottomTabNavigator(
         return <IconComponent name={iconName} size={25} color={tintColor} />;
       },
     }),
+    tabBarComponent: TabBarBottomKeyboardAware,
+    tabBarPosition: 'bottom',
+    swipeEnabled: false,
+    animationEnabled: false,
     tabBarOptions: {
       activeTintColor: 'black',
       inactiveTintColor: 'gray',

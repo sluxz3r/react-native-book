@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { StatusBar, StyleSheet, View, TextInput, Text, Image, ScrollView, Alert, ActivityIndicator, FlatList, TouchableOpacity } from 'react-native';
-import Data from '../components/data'
 import { connect } from 'react-redux';
 import { getBooks } from '../redux/actions/book';
 
@@ -22,7 +21,7 @@ class HomeScreen extends Component {
         <View>
           <StatusBar backgroundColor='#f0f0f0' barStyle='dark-content' />
           <View style={styles.searchBar}>
-            <TextInput style={{ marginLeft: 10, marginRight: 25 }}
+            <TextInput style={{ marginLeft: 10, marginRight: 25, }}
               placeholder="Search..." />
           </View>
           <View style={styles.FlatList}>
@@ -32,12 +31,12 @@ class HomeScreen extends Component {
               onEndReachedThreshold={0.2}
               keyExtractor={(item) => item.bookid.toString()}
               renderItem={({ item, index }) => {
-                console.log(item.bookid)
                 return (
-                  <TouchableOpacity onPress={() => {this.props.navigation.navigate('BookDetails', item)}}>
+                  <TouchableOpacity activeOpacity={1} onPress={() => {this.props.navigation.navigate('BookDetails', item)}}>
                   <View style={styles.item} key={index}>
+                    {item.status_borrow == 0 ? (<Text numberOfLines={1} style={styles.textBorrow}>Available</Text>)
+                :(<Text numberOfLines={1} style={styles.textBorrowed}>Not Available</Text>)}
                     <Image style={styles.image} source={{ uri: `${item.image}` }} />
-                    <Text numberOfLines={1} style={styles.textTitle}>{item.name}</Text>
                   </View>
                   </TouchableOpacity>
                 );
@@ -75,7 +74,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 7,
     alignSelf: 'center',
-    height: 45,
+    height: 38,
     width: 307,
     position: 'relative',
     borderRadius: 20
@@ -98,12 +97,35 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: 'white',
     alignSelf: 'center',
-    paddingBottom: 3,
+    paddingBottom: 2,
 
+  },
+  textBorrow: {
+    fontSize: 10,
+    color: 'white',
+    textAlign:'center',
+    paddingBottom: 2,
+    backgroundColor: '#000000',
+    position:'absolute',
+    zIndex:1,
+    width: 150,
+    height:15,
+    marginTop:195,
+  },
+  textBorrowed: {
+    fontSize: 10,
+    color: 'white',
+    textAlign:'center',
+    backgroundColor: 'grey',
+    position:'absolute',
+    zIndex:1,
+    width: 150,
+    height:15,
+    marginTop:195,
   },
   image: {
     width: 150,
-    height: 200,
+    height: 215,
     borderRadius: 10,
   }
 })
