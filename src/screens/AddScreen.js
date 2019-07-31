@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import {
   View,
   Button,
@@ -9,27 +10,53 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Keyboard, 
-} from 'react-native'
+} from 'react-native';
+import {postBook} from '../redux/actions/book';
 
-export default class AddScreen extends React.Component {
-  state = {
-    title: '', writer: '', image: '', location: '', category: '', description: ''
-  }
-  onChangeText = (key, val) => {
-    this.setState({ [key]: val })
-  }
-  adBook = async () => {
-    const { title, writer, image, location, category, description } = this.state
-    try {
-      // here place your signup logic
-      console.log('user successfully signed up!: ', success)
-    } catch (err) {
-      console.log('error signing up: ', err)
-    }
-  }
+class AddScreen extends Component {
+  constructor(props) {
+		super(props);
+		this.state = {
+			modal: false,
+			act: 0,
+			book: [],
+		};
 
+		this.toggle = this.toggle.bind(this);
+		this.toggleDrop = this.toggleDrop.bind(this);
+  }
+  toggle() {
+		this.setState({
+			modal: !this.state.modal
+		});
+	}
+	toggleDrop() {
+		this.setState((prevState) => ({
+			dropdownOpen: !prevState.dropdownOpen
+		}));
+  }
   render() {
-    console.log(this.state.title)
+    const bookAdd = () => {
+			this.state.book.push({
+				name: this.state.name,
+				writer: this.state.writer,
+				des: this.state.des,
+				image: this.state.image,
+				fk_cat:this.state.fk_cat,
+				fk_loc:this.state.fk_loc
+			});
+
+			add()
+			this.setState((prevState) => ({
+				modal: !prevState.modal
+			}));
+		};
+		let add = async () => {
+      const data = this.state.book[0]
+      await this.props.dispatch(postBook(data))
+      console.log(data)
+    };
+  
     return (
       <ScrollView>
         <View
@@ -41,38 +68,38 @@ export default class AddScreen extends React.Component {
             underlineColorAndroid='black'
             placeholderTextColor='black'
             style={styles.inputField}
-            onChangeText={val => this.onChangeText('title', val)} />
+            onChangeText={val => this.setState({ 'name': val})} />
           <TextInput
             placeholder='Writer'
             underlineColorAndroid='black'
             placeholderTextColor='black'
             style={styles.inputField}
-            onChangeText={val => this.onChangeText('writer', val)} />
+            onChangeText={val => this.setState({ 'writer': val})}/>
             <TextInput
             placeholder='Image'
             underlineColorAndroid='black'
             placeholderTextColor='black'
             style={styles.inputField}
-            onChangeText={val => this.onChangeText('image', val)} />
+            onChangeText={val => this.setState({ 'image': val})} />
             <TextInput
             placeholder='Location'
             underlineColorAndroid='black'
             placeholderTextColor='black'
             style={styles.inputField}
-            onChangeText={val => this.onChangeText('location', val)} />
+            onChangeText={val => this.setState({ 'fk_loc': val})}/>
             <TextInput
             placeholder='Category'
             underlineColorAndroid='black'
             placeholderTextColor='black'
             style={styles.inputField}
-            onChangeText={val => this.onChangeText('category', val)} />
+            onChangeText={val => this.setState({ 'fk_cat': val})} />
             <TextInput
             placeholder='Description'
             underlineColorAndroid='black'
             placeholderTextColor='black'
             style={styles.inputField}
-            onChangeText={val => this.onChangeText('description', val)} />
-          <TouchableOpacity onPress={this.addBook}>
+            onChangeText={val => this.setState({ 'des': val})} />
+          <TouchableOpacity onPress={bookAdd.bind(this)}>
             <Text style={{ color: 'black', marginTop: 10 }}>Donate</Text>
           </TouchableOpacity>
         </View>
@@ -80,6 +107,13 @@ export default class AddScreen extends React.Component {
     )
   }
 }
+const mapStateToProps = state => {
+	return {
+		book: state.book
+	};
+};
+export default connect(mapStateToProps)(AddScreen);
+
 const styles = StyleSheet.create({
   inputField: {
     width: 280,

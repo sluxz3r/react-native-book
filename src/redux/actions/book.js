@@ -16,9 +16,10 @@ export const getBook = (bookid) => {
 };
 
 export const postBook = (data) => {
+    console.log(data)
     return {
         type: 'POST_BOOK',
-        payload: axios.post(`http://localhost:6969/`, data)
+        payload: axios.post(`http://192.168.6.199:6969/`, data)
     }
 
 };
@@ -34,7 +35,7 @@ export const deleteBook = (bookid) => {
 export const addBook = (data) => {
     return {
         type: 'ADD_BOOK', data,
-        payload: axios.post('http://localhost:6969/', data)
+        payload: axios.post('http://192.168.6.199:6969/', data)
     }
 };
 

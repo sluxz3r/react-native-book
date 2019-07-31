@@ -29,7 +29,7 @@ class HomeScreen extends Component {
               data={this.props.book.bookList}
               numColumns={2}
               onEndReachedThreshold={0.2}
-              keyExtractor={(item) => item.bookid.toString()}
+              keyExtractor={(item) => item.bookid}
               renderItem={({ item, index }) => {
                 return (
                   <TouchableOpacity activeOpacity={1} onPress={() => {this.props.navigation.navigate('BookDetails', item)}}>
