@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Modal, Text, ScrollView, View, Image, TouchableOpacity, TouchableHighlight, StyleSheet, Alert } from 'react-native';
+import { Modal, Text, ScrollView, View, Image, TouchableOpacity, TouchableHighlight, StyleSheet, Alert, AsyncStorage  } from 'react-native';
 import { Button } from 'native-base';
 import Borrow from '../components/Borrow';
 import Restore from '../components/Restore';
 
 class BookDetails extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
+    state = {
       id: this.props.navigation.state.params.bookid,
       name: this.props.navigation.state.params.name,
       writer: this.props.navigation.state.params.writer,
@@ -17,9 +14,13 @@ class BookDetails extends Component {
       image: this.props.navigation.state.params.image,
       status: this.props.navigation.state.params.status_borrow,
       modalVisible: false,
-      user: null,
-
-    };
+      userid: null,
+    }
+    constructor(props) {
+      super(props);
+      AsyncStorage.getItem('userid').then((value) => {
+        this.setState({ userid: value })
+    })
   }
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
@@ -38,14 +39,17 @@ class BookDetails extends Component {
                 (<Button style={styles.status}>
                   <Text >Available</Text>
                 </Button>)}
-                {this.state.status == 1 ? 
-                (<Restore id={this.state.id} name={this.state.name} />):
-                (<Borrow id={this.state.id} name={this.state.name} />)}
+                {this.state.userid == null ? (<View><Text>Login!</Text></View>):(
+              <View>
+                {this.state.status == 1 ?
+                  (<Restore id={this.state.id} name={this.state.name} />) :
+                  (<Borrow id={this.state.id} name={this.state.name} />)}
+              </View>)}
 
             </View>
           </View>
           <Text style={styles.des}>{this.state.des}</Text>
-          
+
         </View>
       </ScrollView>
     );
@@ -53,8 +57,8 @@ class BookDetails extends Component {
 }
 const mapStateToProps = state => {
   return {
-      user: state.user,
-      borrow: state.borrow,
+    user: state.user,
+    borrow: state.borrow,
   };
 };
 

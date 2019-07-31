@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {AsyncStorage} from 'react-native'
+import {AsyncStorage} from 'react-native';
 
 export const getUser = () => {
     return {
@@ -63,10 +63,8 @@ export const login = (data) => {
                 "authorization": "x-control-user",
             }
         }).then( res => {
-            console.log(res.data.result.userid)
-           
             const token = res.data.result.token;
-            const userid = res.data.result.userid;
+            const userid = res.data.result.userid.toString();
             AsyncStorage.setItem('jwtToken', token);
             AsyncStorage.setItem('userid', userid);
         })

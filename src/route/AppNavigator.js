@@ -16,7 +16,6 @@ import ProfileScreen from '../screens/ProfileScreen';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 
-
 const HomeStack = createStackNavigator(
   {
     Home: { screen: HomeScreen },
