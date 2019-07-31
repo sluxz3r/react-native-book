@@ -6,6 +6,7 @@ import { getBooks } from '../redux/actions/book';
 class HomeScreen extends Component {
   state = {
     books: [],
+    refreshing : false,
     index:''
   };
   componentDidMount = async () => {
@@ -15,7 +16,6 @@ class HomeScreen extends Component {
     });
   };
   render() {
-    console.log(this.props.book.bookList);
     return (
       <ScrollView>
         <View>
@@ -24,6 +24,7 @@ class HomeScreen extends Component {
             <TextInput style={{ marginLeft: 10, marginRight: 25, }}
               placeholder="Search..." />
           </View>
+          
           <View style={styles.FlatList}>
             <FlatList
               data={this.props.book.bookList}
@@ -86,10 +87,10 @@ const styles = StyleSheet.create({
 
   item: {
     backgroundColor: 'black',
-    margin: 5,
+    margin: 7,
     borderRadius: 8,
     elevation: 6,
-    width: 150,
+    width: 145,
     height: 215,
   },
 
@@ -105,12 +106,12 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign:'center',
     paddingBottom: 2,
-    backgroundColor: '#000000',
+    backgroundColor: '#003994',
     position:'absolute',
     zIndex:1,
-    width: 150,
+    width: 145,
     height:15,
-    marginTop:195,
+    marginTop:192,
   },
   textBorrowed: {
     fontSize: 10,
@@ -119,12 +120,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'grey',
     position:'absolute',
     zIndex:1,
-    width: 150,
+    width: 145,
     height:15,
-    marginTop:195,
+    marginTop:192,
   },
   image: {
-    width: 150,
+    width: 145,
     height: 215,
     borderRadius: 10,
   }

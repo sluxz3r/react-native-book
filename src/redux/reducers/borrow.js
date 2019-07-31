@@ -7,6 +7,28 @@ const initialState = {
 
 const borrow = (state = initialState, action) => {
 	switch (action.type) {
+		// GET ALL BOOKS
+        case 'ALL_BORROW_PENDING':
+            return {
+                ...state,
+                isLoading: true,
+                isFulfilled: false,
+                isRejected: false,
+            };
+        case 'ALL_BORROW_REJECTED':
+            return {
+                ...state,
+                isLoading: false,
+                isRejected: true,
+            };
+        case 'ALL_BORROW_FULFILLED':
+            return {
+                ...state,
+                isLoading: false,
+                isFulfilled: true,
+                borrowList : action.payload.data.result,
+            };
+
 		case 'GET_BORROW_PENDING':
 			return {
 				...state,

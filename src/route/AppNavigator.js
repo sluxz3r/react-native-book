@@ -7,12 +7,14 @@ import {
 } from 'react-navigation';
 
 import HomeScreen from '../screens/HomeScreen';
-import BookList from '../components/BookList';
 import BookDetails from '../screens/BookDetails';
 
 import AddScreen from '../screens/AddScreen';
 import BorrowScreen from '../screens/BorrowScreen';
+
 import ProfileScreen from '../screens/ProfileScreen';
+import LoginScreen from '../screens/LoginScreen';
+import RegisterScreen from '../screens/RegisterScreen';
 
 
 const HomeStack = createStackNavigator(
@@ -63,7 +65,10 @@ const BorrowStack = createStackNavigator(
 
 const ProfileStack = createStackNavigator(
   {
+    Login: {screen: LoginScreen},
     Profile: { screen: ProfileScreen },
+    Register: {screen: RegisterScreen},
+   
   },
   {
     defaultNavigationOptions: {
@@ -79,11 +84,12 @@ const ProfileStack = createStackNavigator(
 
 const switchNavigator = createBottomTabNavigator(
   {
-    Add: { screen: AddStack },
+    
     Home: { screen: HomeStack },
-   
+    Add: { screen: AddStack },
     Borrow: { screen: BorrowStack },
     Profile: { screen: ProfileStack },
+    
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({

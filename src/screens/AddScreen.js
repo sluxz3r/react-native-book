@@ -54,7 +54,6 @@ class AddScreen extends Component {
 		let add = async () => {
       const data = this.state.book[0]
       await this.props.dispatch(postBook(data))
-      console.log(data)
     };
   
     return (
@@ -62,7 +61,7 @@ class AddScreen extends Component {
         <View
           behavior="padding"
           style={styles.Wrapper}>
-            <Text>Donate</Text>
+            <Text style={styles.text}>Donate</Text>
           <TextInput
             placeholder='Title'
             underlineColorAndroid='black'
@@ -99,8 +98,8 @@ class AddScreen extends Component {
             placeholderTextColor='black'
             style={styles.inputField}
             onChangeText={val => this.setState({ 'des': val})} />
-          <TouchableOpacity onPress={bookAdd.bind(this)}>
-            <Text style={{ color: 'black', marginTop: 10 }}>Donate</Text>
+          <TouchableOpacity onPress={bookAdd.bind(this)} style={styles.addButton}>
+            <Text style={{ color: 'white', fontSize:18 }}>Donate</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -129,6 +128,17 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'black',
-    fontSize: 23
-  }
+    fontSize: 23,
+    paddingTop:20
+  },
+  addButton:{
+    backgroundColor: 'black',
+    marginTop:40,
+    width: 160,
+    height: 40,
+    borderRadius:8,
+    elevation: 5,
+    justifyContent: "center",
+    alignItems: "center"
+  },
 });
