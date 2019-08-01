@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Text, TextInput, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, TextInput, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 
 import { register } from '../redux/actions/user';
 
@@ -42,9 +42,11 @@ class RegisterScreen extends Component {
             await this.props.dispatch(register(this.state.user[0]))
         };
         return (
+            <ScrollView>
             <View
                 behavior="padding"
                 style={styles.Wrapper}>
+                    <Text style={styles.register}>Register</Text>
                 <TextInput
                     placeholder='Email'
                     underlineColorAndroid='black'
@@ -78,6 +80,7 @@ class RegisterScreen extends Component {
                     <Text style={{ color: 'black', marginTop: 10 }}>Login</Text>
                 </TouchableOpacity>
             </View>
+            </ScrollView>
         )
     }
 }
@@ -113,5 +116,9 @@ const styles = StyleSheet.create({
         elevation: 5,
         justifyContent: "center",
         alignItems: "center"
+    },
+    register:{
+        fontSize:18,
+        padding:20
     },
 });

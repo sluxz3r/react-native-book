@@ -40,7 +40,6 @@ class Penalty extends Component {
                     })
                 })
         }
-        console.log(this.state.borrow)
     };
 
     render() {

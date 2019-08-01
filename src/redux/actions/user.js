@@ -19,14 +19,7 @@ export const getUser = () => {
 export const getUserId = (userid) => {
     return {
         type: 'GET_USERID',
-        payload: axios.get(`http://localhost:6969/user/${userid}`,
-            {
-                headers: {
-                    "authorization": "x-control-user",
-                    "x-access-token": `token: ${AsyncStorage.jwtToken}`,
-                    "x-control-user": AsyncStorage.userid
-                }
-            }),
+        payload: axios.get(`http://192.168.6.199:6969/user/${userid}`),
 
     }
 };
@@ -65,8 +58,12 @@ export const login = (data) => {
         }).then( res => {
             const token = res.data.result.token;
             const userid = res.data.result.userid.toString();
+            const fullname = res.data.result.fullname;
+            const user_ktp = res.data.result.user_ktp.toString();
             AsyncStorage.setItem('jwtToken', token);
             AsyncStorage.setItem('userid', userid);
+            AsyncStorage.setItem('name', fullname);
+            AsyncStorage.setItem('ktp', user_ktp);
         })
     }
 
