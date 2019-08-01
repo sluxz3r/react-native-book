@@ -47,6 +47,7 @@ class Penalty extends Component {
             this.state.updates.push({
                 denda: this.state.denda
             })
+            this.props.restoreModal(false)
 
             update()
             this.setState((visible) => ({
@@ -59,10 +60,12 @@ class Penalty extends Component {
         };
         return (
             <View>
-                <Button onPress={() => {
+                <Button 
+                style={{backgroundColor:'black', height:10}}
+                onPress={() => {
                     this.setModalVisible(!this.state.modalVisible);
-                }} style={styles.borrow}>
-                    <Text>Confirm</Text>
+                }}>
+                    <Text style={{color:'white'}}>Confirm</Text>
                 </Button>
                 <Modal
                     animationType="slide"

@@ -1,37 +1,39 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { allBorrow } from '../redux/actions/borrowed';
+import { userBorrows } from '../redux/actions/history';
 import { NavigationEvents } from 'react-navigation';
 import moment from 'moment';
 import { StatusBar, StyleSheet, View, TextInput, Text, Image, ScrollView, Alert, ActivityIndicator, FlatList, TouchableOpacity } from 'react-native';
 
-class BorrowScreen extends Component {
+class BorrowList extends Component {
   state = {
-    borrowed: [],
+    history: [],
   };
   componentDidMount = async () => {
-    await this.props.dispatch(allBorrow());
+      const user_ktp = this.props.navigation.state.params.ktp
+      const userid = this.props.navigation.state.params.userid
+      const token = this.props.navigation.state.params.token
+    await this.props.dispatch(userBorrows(user_ktp, userid, token));
     this.setState({
-      borrowed: this.props.borrowed,
+      history: this.props.history,
     });
   };
   render() {
-    console.log("BORROWED",this.props.borrowed)
     return (
       <ScrollView>
         <View>
         <NavigationEvents
-            onWillFocus={payload => this.props.dispatch(allBorrow(), payload)}
+            onWillFocus={payload => this.props.dispatch(userBorrows(this.props.navigation.state.params.ktp), payload)}
           />
           <View style={{ flex: 1, alignItems: 'center' }}>
             <Text>Borrow List!</Text>
           </View>
           <View >
             <FlatList
-              data={this.props.borrowed.borrowedList}
+              data={this.props.history.historyList}
               numColumns={1}
               onEndReachedThreshold={0.2}
-              keyExtractor={(item, index) => 'key'+index}
+              keyExtractor={(item) => item.userid}
               renderItem={({ item, index }) => {
                 return (
                   <TouchableOpacity activeOpacity={1}>
@@ -40,9 +42,9 @@ class BorrowScreen extends Component {
                       <View style={styles.textLeft}>
                         <Text>{item.name}</Text>
                         <Text>By :{item.writer}</Text>
-                        <Text>Name :{item.fullname}</Text>
                         <Text>Borrow :{moment(item.tanggal_pinjam).format("DD-MM-YYYY")}</Text>
                         <Text>Return :{moment(item.harus_kembali).format("DD-MM-YYYY")}</Text>
+                        <Text>Fee :Rp.{item.denda}</Text>
                       </View>
                     </View>
                   </TouchableOpacity>
@@ -58,11 +60,11 @@ class BorrowScreen extends Component {
 }
 const mapStateToProps = state => {
   return {
-    borrowed: state.borrowed,
+    history: state.history,
   };
 };
 
-export default connect(mapStateToProps)(BorrowScreen);
+export default connect(mapStateToProps)(BorrowList);
 const styles = StyleSheet.create({
   searchBar: {
     zIndex: 1,

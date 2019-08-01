@@ -14,7 +14,7 @@ class Restore extends Component {
             update: []
         };
     }
-    setModalVisible(visible) {
+    setModalVisible = (visible) => {
         this.setState({ modalVisible: visible });
     }
     componentDidMount = async () => {
@@ -39,12 +39,15 @@ class Restore extends Component {
             })
 
             update()
-            this.setState((prevState) => ({
-                modal: !prevState.modal
+            this.setState((visible) => ({
+                modalVisible: visible
             }));
         };
         let update = async () => {
             await this.props.dispatch(updateBorrow((this.state.update[0]), this.props.id))
+                .then(() => {
+                    this.setState({ modalVisible: false })
+                })
         };
 
         const { borrow } = this.state;
@@ -61,25 +64,40 @@ class Restore extends Component {
                 <Button onPress={() => {
                     this.setModalVisible(!this.state.modalVisible);
                 }} style={styles.borrow}>
-                    <Text>Return</Text>
+                    <Text style={{ color: 'white' }}>Return</Text>
                 </Button>
                 <Modal
-                    animationType="slide"
-                    transparent={false}
+                    transparent={true}
                     visible={this.state.modalVisible}
                 >
-                    <View style={{ margin: 22 }}>
-                        <Text>Title : {this.props.name}</Text>
-                        <Text>{date}</Text>
-                        <TouchableHighlight
-                            onPress={() => {
-                                this.setModalVisible(!this.state.modalVisible);
-                            }}>
-                            <Text style={{ color: 'black', fontSize: 18 }}>Hide Modal</Text>
-                        </TouchableHighlight>
-                        <TouchableOpacity onPress={editBorrow.bind(this)} style={styles.addButton}>
-                            <Penalty id={this.props.id} />
-                        </TouchableOpacity>
+                    <View style={{
+                        flex: 1,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: 'rgba(52, 52, 52, 0.8)',
+                    }}>
+                        <View style={{
+                            width: 300,
+                            height: 300,
+                            backgroundColor: 'white',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderRadius: 10,
+                            borderWidth: 2
+                        }}>
+                            <Text style={{ fontSize: 20 }}>Title : {this.props.name}</Text>
+                            <Text style={{ fontSize: 18 }}>{date}</Text>
+                            <TouchableOpacity onPress={editBorrow.bind(this)} style={styles.addButton}>
+                                <Penalty id={this.props.id} restoreModal={this.setModalVisible} />
+                            </TouchableOpacity>
+                            <TouchableHighlight
+                                style={styles.cancelButton}
+                                onPress={() => {
+                                    this.setModalVisible(!this.state.modalVisible);
+                                }}>
+                                <Text style={{ color: 'black', fontSize: 18 }}>Close</Text>
+                            </TouchableHighlight>
+                        </View>
                     </View>
                 </Modal>
             </View>
@@ -94,56 +112,67 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps)(Restore);
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      flexDirection: 'row',
-      position: 'relative',
-      padding: 20
+        flex: 1,
+        flexDirection: 'row',
+        position: 'relative',
+        padding: 20
     },
     textLeft: {
-      flexDirection: 'column',
-      flex: 1,
-      paddingLeft: 10
+        flexDirection: 'column',
+        flex: 1,
+        paddingLeft: 10
     },
     image: {
-      width: 90,
-      height: 140,
-      borderRadius: 10,
+        width: 90,
+        height: 140,
+        borderRadius: 10,
     },
     name: {
-      fontSize: 22,
-      fontWeight: 'bold'
+        fontSize: 22,
+        fontWeight: 'bold'
     },
     writer: {
-      fontSize: 18,
-      paddingBottom: 10
+        fontSize: 18,
+        paddingBottom: 10
     },
     status: {
-      backgroundColor: '#428bff',
-      width: 140,
-      height: 30,
-      justifyContent: "center",
-      alignItems: "center"
+        backgroundColor: '#428bff',
+        width: 140,
+        height: 30,
+        justifyContent: "center",
+        alignItems: "center"
     },
     borrow: {
-      backgroundColor: '#df42ff',
-      width: 140,
-      height: 30,
-      marginTop: 8,
-      justifyContent: "center",
-      alignItems: "center"
+        backgroundColor: '#df42ff',
+        width: 140,
+        height: 30,
+        marginTop: 8,
+        justifyContent: "center",
+        alignItems: "center"
     },
     des: {
-      marginTop: 0,
-      padding: 20,
+        marginTop: 0,
+        padding: 20,
     },
-    addButton:{
+    addButton: {
         backgroundColor: 'black',
-        marginTop:40,
+        marginTop: 40,
         width: 160,
         height: 40,
-        borderRadius:8,
+        borderRadius: 8,
         elevation: 5,
         justifyContent: "center",
         alignItems: "center"
+    },
+    cancelButton: {
+        backgroundColor: 'white',
+        marginTop: 10,
+        width: 160,
+        height: 40,
+        borderRadius: 8,
+        elevation: 5,
+        justifyContent: "center",
+        alignItems: "center",
+        borderWidth: 2
       },
-  })
+})

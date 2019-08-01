@@ -15,6 +15,7 @@ import BorrowScreen from '../screens/BorrowScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
+import BorrowList from '../screens/BorrowList';
 
 const HomeStack = createStackNavigator(
   {
@@ -67,6 +68,7 @@ const ProfileStack = createStackNavigator(
     Login: {screen: LoginScreen},
     Profile: { screen: ProfileScreen },
     Register: {screen: RegisterScreen},
+    BorrowList: {screen: BorrowList},
    
   },
   {

@@ -35,11 +35,12 @@ class BookDetails extends Component {
               <Text style={styles.name}>{this.state.name}</Text>
               <Text style={styles.writer}>By {this.state.writer}</Text>
               {this.state.status == 1 ?
-                (<Button style={styles.status}><Text>Not Available</Text></Button>) :
+                (<Button style={styles.status}><Text style={{color:'white'}}>Not Available</Text></Button>) :
                 (<Button style={styles.status}>
-                  <Text >Available</Text>
+                  <Text style={{color:'white'}}>Available</Text>
                 </Button>)}
-                {this.state.userid == null ? (<View><Text>Login!</Text></View>):(
+                {this.state.userid == null ? 
+                (<TouchableOpacity  onPress={() => { this.props.navigation.navigate('Login')}} style={styles.login}><Text style={{color:'black'}}>Login!</Text></TouchableOpacity>):(
               <View>
                 {this.state.status == 1 ?
                   (<Restore id={this.state.id} name={this.state.name} />) :
@@ -91,6 +92,7 @@ const styles = StyleSheet.create({
   },
   status: {
     backgroundColor: '#428bff',
+    color:'white',
     width: 140,
     height: 30,
     justifyContent: "center",
@@ -98,11 +100,23 @@ const styles = StyleSheet.create({
   },
   borrow: {
     backgroundColor: '#df42ff',
+    color:'white',
     width: 140,
     height: 30,
     marginTop: 8,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    borderWidth:2
+  },
+  login : {
+    backgroundColor: 'white',
+    color:'black',
+    width: 140,
+    height: 30,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop:10,
+    borderWidth:2
   },
   des: {
     marginTop: 0,

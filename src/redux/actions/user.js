@@ -60,10 +60,13 @@ export const login = (data) => {
             const userid = res.data.result.userid.toString();
             const fullname = res.data.result.fullname;
             const user_ktp = res.data.result.user_ktp.toString();
-            AsyncStorage.setItem('jwtToken', token);
+            const email = res.data.result.email;
+    
             AsyncStorage.setItem('userid', userid);
             AsyncStorage.setItem('name', fullname);
             AsyncStorage.setItem('ktp', user_ktp);
+            AsyncStorage.setItem('email', email);
+            AsyncStorage.setItem('jwtToken', token);
         })
     }
 

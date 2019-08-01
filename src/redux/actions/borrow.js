@@ -1,11 +1,9 @@
 import axios from 'axios';
 import {AsyncStorage} from 'react-native';
-const token = AsyncStorage.getItem('jwtToken');
-console.log('Token', AsyncStorage.getItem('jwtToken'))
-console.log('User', AsyncStorage.getItem('userid'))
+
 export const allBorrow = () => {
   return {
-    type: 'ALL_BORROW',
+    type: 'ALL_BORROWED',
     payload: axios.get(`http://192.168.6.199:6969/borrow/lah/`,
     {
       headers: {
@@ -17,17 +15,18 @@ export const allBorrow = () => {
   }
 }
 
-export const userBorrows = (user_ktp) => {
+export const userBorrows = (user_ktp, userid, token) => {
+  console.log("action" , userid, token)
   return {
     type: 'USER_BORROW',
     payload: axios.get(`http://192.168.6.199:6969/lah/user/${user_ktp}`,
-      {
-        headers: {
-          "authorization": "x-control-user",
-          "x-access-token": `token: ${localStorage.jwtToken}`,
-          "x-control-user": localStorage.userid
-        }
-      })
+    {
+      headers: {
+        "authorization": "x-control-user",
+        "x-access-token": `token: ${token}`,
+        "x-control-user": userid,
+      }
+    })
   }
 }
 

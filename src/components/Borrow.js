@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {  AsyncStorage, Modal, Text, ScrollView, View, Image, TouchableOpacity, TouchableHighlight, StyleSheet, Alert } from 'react-native';
+import { AsyncStorage, Modal, Text, ScrollView, View, Image, TouchableOpacity, TouchableHighlight, StyleSheet, Alert } from 'react-native';
 import { Button } from 'native-base';
 import { postBorrow } from '../redux//actions/borrow';
 
@@ -8,7 +8,7 @@ class Borrow extends Component {
   state = {
     name: '',
     user_id: '',
-    ktp:'',
+    ktp: '',
     id: this.props.id,
     modalVisible: false,
     borrow: [],
@@ -41,7 +41,13 @@ class Borrow extends Component {
       }));
     };
     let add = async () => {
-      await this.props.dispatch(postBorrow(this.state.borrow[0]));
+      await this.props.dispatch(postBorrow(this.state.borrow[0]))
+        .then(() => {
+          this.setState((visible) => ({
+            modalVisible: visible
+          })
+          )
+        })
     };
 
     var today = new Date();
@@ -55,27 +61,44 @@ class Borrow extends Component {
         <Button onPress={() => {
           this.setModalVisible(!this.state.modalVisible);
         }} style={styles.borrow}>
-          <Text>Borrow</Text>
+          <Text style={{ color: 'white' }}>Borrow</Text>
         </Button>
         <Modal
-          animationType="slide"
-          transparent={false}
+          transparent={true}
           visible={this.state.modalVisible}
         >
-          <View style={{ margin: 22 }}>
-            <Text>Name : {this.state.name}</Text>
-            <Text>ID Card :{this.state.ktp}</Text>
-            <Text>Title : {this.props.name}</Text>
-            <Text>{date}</Text>
-            <TouchableHighlight
-              onPress={() => {
-                this.setModalVisible(!this.state.modalVisible);
-              }}>
-              <Text style={{ color: 'black', fontSize: 18 }}>Hide Modal</Text>
-            </TouchableHighlight>
-            <TouchableOpacity onPress={borrow.bind(this)} style={styles.addButton}>
-              <Text style={{ color: 'white', fontSize: 18 }}>Donate</Text>
-            </TouchableOpacity>
+          <View style={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'rgba(52, 52, 52, 0.8)',
+          }}>
+            <View style={{
+              width: 300,
+              height: 300,
+              backgroundColor: 'white',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 10,
+              borderWidth: 2
+            }}>
+              <View>
+                <Text style={{ fontSize: 20 }}>Name : {this.state.name}</Text>
+                <Text style={{ fontSize: 18 }}>ID Card :{this.state.ktp}</Text>
+                <Text style={{ fontSize: 18 }}>Title : {this.props.name}</Text>
+                <Text style={{ fontSize: 18 }}>Date Return :{date}</Text>
+              </View>
+              <TouchableOpacity onPress={borrow.bind(this)} style={styles.addButton}>
+                <Text style={{ color: 'white', fontSize: 18 }}>Borrow</Text>
+              </TouchableOpacity>
+              <TouchableHighlight
+                style={styles.cancelButton}
+                onPress={() => {
+                  this.setModalVisible(!this.state.modalVisible);
+                }}>
+                <Text style={{ color: 'black', fontSize: 18 }}>Cancel</Text>
+              </TouchableHighlight>
+            </View>
           </View>
         </Modal>
       </View>
@@ -126,7 +149,7 @@ const styles = StyleSheet.create({
     height: 30,
     marginTop: 8,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   des: {
     marginTop: 0,
@@ -134,12 +157,35 @@ const styles = StyleSheet.create({
   },
   addButton: {
     backgroundColor: 'black',
-    marginTop: 40,
+    marginTop: 25,
     width: 160,
     height: 40,
     borderRadius: 8,
     elevation: 5,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    borderWidth: 2,
+    borderColor: 'white',
   },
+  cancelButton: {
+    backgroundColor: 'white',
+    marginTop: 10,
+    width: 160,
+    height: 40,
+    borderRadius: 8,
+    elevation: 5,
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 2
+  },
+  right: {
+    flexDirection: 'column',
+    flex: 1,
+    paddingLeft: 10
+  },
+  modal: {
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: 'grey',
+  }
 })

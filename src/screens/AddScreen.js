@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { NavigationEvents } from 'react-navigation';
 import {
   View,
   Button,
@@ -17,23 +18,8 @@ class AddScreen extends Component {
   constructor(props) {
 		super(props);
 		this.state = {
-			modal: false,
-			act: 0,
 			book: [],
 		};
-
-		this.toggle = this.toggle.bind(this);
-		this.toggleDrop = this.toggleDrop.bind(this);
-  }
-  toggle() {
-		this.setState({
-			modal: !this.state.modal
-		});
-	}
-	toggleDrop() {
-		this.setState((prevState) => ({
-			dropdownOpen: !prevState.dropdownOpen
-		}));
   }
   render() {
     const bookAdd = () => {
@@ -47,9 +33,7 @@ class AddScreen extends Component {
 			});
 
 			add()
-			this.setState((prevState) => ({
-				modal: !prevState.modal
-			}));
+	
 		};
 		let add = async () => {
       const data = this.state.book[0]
@@ -57,6 +41,7 @@ class AddScreen extends Component {
     };
   
     return (
+      <KeyboardAvoidingView>
       <ScrollView>
         <View
           behavior="padding"
@@ -103,6 +88,7 @@ class AddScreen extends Component {
           </TouchableOpacity>
         </View>
       </ScrollView>
+      </KeyboardAvoidingView>
     )
   }
 }
