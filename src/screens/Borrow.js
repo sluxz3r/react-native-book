@@ -3,55 +3,60 @@ import { connect } from 'react-redux';
 import { allBorrow } from '../redux/actions/borrowed';
 import { NavigationEvents } from 'react-navigation';
 import moment from 'moment';
-import { StatusBar, StyleSheet, View, TextInput, Text, Image, ScrollView, Alert, ActivityIndicator, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, Image, ScrollView, ActivityIndicator, FlatList, TouchableOpacity } from 'react-native';
 
 class BorrowScreen extends Component {
   state = {
     borrowed: [],
+    isLoading: true
   };
   componentDidMount = async () => {
     await this.props.dispatch(allBorrow());
     this.setState({
       borrowed: this.props.borrowed,
+      isLoading: false
     });
   };
+
   render() {
-    console.log("BORROWED",this.props.borrowed)
+    console.log("BORROWED", this.props.borrowed.borrowedList)
     return (
       <ScrollView>
-        <View>
-        <NavigationEvents
-            onWillFocus={payload => this.props.dispatch(allBorrow(), payload)}
-          />
-          <View style={{ flex: 1, alignItems: 'center' }}>
-            <Text>Borrow List!</Text>
-          </View>
-          <View >
-            <FlatList
-              data={this.props.borrowed.borrowedList}
-              numColumns={1}
-              onEndReachedThreshold={0.2}
-              keyExtractor={(item, index) => 'key'+index}
-              renderItem={({ item, index }) => {
-                return (
-                  <TouchableOpacity activeOpacity={1}>
-                    <View style={styles.container} key={index}>
-                      <Image style={styles.image} source={{ uri: `${item.image}` }} />
-                      <View style={styles.textLeft}>
-                        <Text>{item.name}</Text>
-                        <Text>By :{item.writer}</Text>
-                        <Text>Name :{item.fullname}</Text>
-                        <Text>Borrow :{moment(item.tanggal_pinjam).format("DD-MM-YYYY")}</Text>
-                        <Text>Return :{moment(item.harus_kembali).format("DD-MM-YYYY")}</Text>
+        {this.state.isLoading == true ?
+          <ActivityIndicator size='large' color='black' /> :
+          <View>
+            <NavigationEvents
+              onWillFocus={() => this.props.dispatch(allBorrow())}
+            />
+            <View style={{ flex: 1, alignItems: 'center' }}>
+              <Text>Borrow List!</Text>
+            </View>
+            <View >
+              <FlatList
+                data={this.props.borrowed.borrowedList}
+                numColumns={1}
+                onEndReachedThreshold={0.2}
+                keyExtractor={(item, index) => 'key' + index}
+                renderItem={({ item, index }) => {
+                  return (
+                    <TouchableOpacity activeOpacity={1}>
+                      <View style={styles.container} key={index}>
+                        <Image style={styles.image} source={{ uri: `${item.image}` }} />
+                        <View style={styles.textLeft}>
+                          <Text>{item.name}</Text>
+                          <Text>By :{item.writer}</Text>
+                          <Text>Name :{item.fullname}</Text>
+                          <Text>Borrow :{moment(item.tanggal_pinjam).format("DD-MM-YYYY")}</Text>
+                          <Text>Return :{moment(item.harus_kembali).format("DD-MM-YYYY")}</Text>
+                        </View>
                       </View>
-                    </View>
-                  </TouchableOpacity>
-                )
-              }
-              }>
-            </FlatList>
-          </View>
-        </View>
+                    </TouchableOpacity>
+                  )
+                }
+                }>
+              </FlatList>
+            </View>
+          </View>}
       </ScrollView>
     );
   }

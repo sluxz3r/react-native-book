@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { userBorrows } from '../redux/actions/history';
 import { NavigationEvents } from 'react-navigation';
 import moment from 'moment';
-import { StatusBar, StyleSheet, View, TextInput, Text, Image, ScrollView, Alert, ActivityIndicator, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, Image, ScrollView, ActivityIndicator, FlatList, TouchableOpacity } from 'react-native';
 
 class BorrowList extends Component {
   state = {

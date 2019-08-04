@@ -6,15 +6,16 @@ import {
   createAppContainer,
 } from 'react-navigation';
 
-import HomeScreen from '../screens/HomeScreen';
+import HomeScreen from '../screens/Home';
 import BookDetails from '../screens/BookDetails';
 
-import AddScreen from '../screens/AddScreen';
-import BorrowScreen from '../screens/BorrowScreen';
+import AddScreen from '../screens/Add';
+import BorrowScreen from '../screens/Borrow';
 
-import ProfileScreen from '../screens/ProfileScreen';
-import LoginScreen from '../screens/LoginScreen';
-import RegisterScreen from '../screens/RegisterScreen';
+import ProfileScreen from '../screens/Profile';
+// import Auth from '../screens/Auth';
+import LoginScreen from '../screens/Login';
+import RegisterScreen from '../screens/Register';
 import BorrowList from '../screens/BorrowList';
 
 const HomeStack = createStackNavigator(
@@ -30,7 +31,7 @@ const HomeStack = createStackNavigator(
       headerTintColor: 'white',
       title: 'BOOK',
     },
-  }
+  },
 );
 
 const AddStack = createStackNavigator(

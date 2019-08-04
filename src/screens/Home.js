@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StatusBar, StyleSheet, View, TextInput, Text, Image, ScrollView, Alert, ActivityIndicator, FlatList, TouchableOpacity } from 'react-native';
+import { StatusBar, StyleSheet, View, TextInput, Text, Image, ScrollView, ActivityIndicator, FlatList, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { getBooks } from '../redux/actions/book';
 import { NavigationEvents } from 'react-navigation';
@@ -7,7 +7,7 @@ import { NavigationEvents } from 'react-navigation';
 class HomeScreen extends Component {
   state = {
     books: [],
-    refreshing: false,
+    isLoading: true,
     index: ''
   };
   componentDidMount = async () => {
@@ -17,40 +17,50 @@ class HomeScreen extends Component {
     });
   };
 
+  componentWillMount() {
+    setTimeout(() => {
+      this.setState({ isLoading: false })
+    }, 500)
+
+  }
+
   render() {
     return (
       <ScrollView>
-        <View>
-          <NavigationEvents
-            onWillFocus={payload => this.props.dispatch(getBooks())}
-          />
-          <StatusBar backgroundColor='#f0f0f0' barStyle='dark-content' />
-          <View style={styles.searchBar}>
-            <TextInput style={{ marginLeft: 10, marginRight: 25, }}
-              placeholder="Search..." />
-          </View>
+        <NavigationEvents
+          onWillFocus={() => this.props.dispatch(getBooks())}
+        />
+        {this.state.isLoading ?
+          <ActivityIndicator size='large' color='black' />
+          :
+          <View>
+            <StatusBar backgroundColor='#f0f0f0' barStyle='dark-content' />
+            <View style={styles.searchBar}>
+              <TextInput style={{ marginLeft: 10, marginRight: 25, }}
+                placeholder="Search..." />
+            </View>
 
-          <View style={styles.FlatList}>
-            <FlatList
-              data={this.props.book.bookList}
-              numColumns={2}
-              onEndReachedThreshold={0.2}
-              keyExtractor={(item) => item.bookid}
-              renderItem={({ item, index }) => {
-                return (
-                  <TouchableOpacity activeOpacity={1} onPress={() => { this.props.navigation.navigate('BookDetails', item) }}>
-                    <View style={styles.item} key={index}>
-                      {item.status_borrow == 0 ? (<Text numberOfLines={1} style={styles.textBorrow}>Available</Text>)
-                        : (<Text numberOfLines={1} style={styles.textBorrowed}>Not Available</Text>)}
-                      <Image style={styles.image} source={{ uri: `${item.image}` }} />
-                    </View>
-                  </TouchableOpacity>
-                );
-              }
-              }>
-            </FlatList>
-          </View>
-        </View>
+            <View style={styles.FlatList}>
+              <FlatList
+                data={this.props.book.bookList}
+                numColumns={2}
+                onEndReachedThreshold={0.2}
+                keyExtractor={(item) => item.bookid}
+                renderItem={({ item, index }) => {
+                  return (
+                    <TouchableOpacity activeOpacity={1} onPress={() => { this.props.navigation.navigate('BookDetails', item) }}>
+                      <View style={styles.item} key={index}>
+                        {item.status_borrow == 0 ? (<Text numberOfLines={1} style={styles.textBorrow}>Available</Text>)
+                          : (<Text numberOfLines={1} style={styles.textBorrowed}>Not Available</Text>)}
+                        <Image style={styles.image} source={{ uri: `${item.image}` }} />
+                      </View>
+                    </TouchableOpacity>
+                  );
+                }
+                }>
+              </FlatList>
+            </View>
+          </View>}
       </ScrollView>
     );
   }
