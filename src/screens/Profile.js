@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ScrollView, Image, Text, View, ImageBackground, TouchableOpacity, StyleSheet, AsyncStorage, Alert } from 'react-native';
-import { NavigationEvents } from 'react-navigation';
+import { NavigationEvents,withNavigation } from 'react-navigation';
 import { logout, getUserId } from '../redux/actions/user';
 
 class LoginScreen extends Component {
     state = {
-        data: [],
         user: [],
         userid: null,
         name: '',
@@ -21,7 +20,7 @@ class LoginScreen extends Component {
     }
 
     buttonPress() {
-        console.log('called');
+      
         this.props.navigation.navigate('BorrowList', { ktp: this.state.ktp, userid: this.state.userid, token: this.state.token });
       }
     
@@ -64,12 +63,12 @@ class LoginScreen extends Component {
                         'Logout',
                         'Logout Success',
                         [
-                            { text: 'OK', onPress: () => this.props.navigation.navigate('Login') },
+                            { text: 'OK', onPress: () => this.props.navigation.navigate('Home') },
                         ],
                     );
                 })
         };
-        console.log("KTP", this.state.data[0])
+        console.log("KTP", this.state.user)
         console.log("TOKEN", this.state.token)
         return (
             <ScrollView>
@@ -131,7 +130,7 @@ const mapStateToProps = state => {
         user: state.user,
     };
 };
-export default connect(mapStateToProps)(LoginScreen);
+export default connect(mapStateToProps)(withNavigation(LoginScreen));
 const styles = StyleSheet.create({
     inputField: {
         width: 280,

@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { ScrollView, Text, View, StyleSheet, AsyncStorage } from 'react-native';
 import { NavigationEvents } from 'react-navigation';
 
-import Login from './LoginScreen';
-import Profile from './ProfileScreen';
+import Login from './Login';
+import Profile from './Profile';
 
 class Auth extends Component {
     state = {
@@ -28,7 +28,7 @@ class Auth extends Component {
                         })}
                     />
                     {this.state.token == null ? 
-                    (this.props.navigation.navigate('Login')):
+                    (<Login />):
                     (<Profile />)}
                 </View>
             </ScrollView>

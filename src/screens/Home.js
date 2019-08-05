@@ -2,44 +2,52 @@ import React, { Component } from 'react';
 import { StatusBar, StyleSheet, View, TextInput, Text, Image, ScrollView, ActivityIndicator, FlatList, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { getBooks } from '../redux/actions/book';
-import { NavigationEvents } from 'react-navigation';
 
 class HomeScreen extends Component {
   state = {
-    books: [],
-    isLoading: true,
-    index: ''
+    books: null,
   };
   componentDidMount = async () => {
     await this.props.dispatch(getBooks());
     this.setState({
       books: this.props.book,
     });
+    this.subs = [
+      this.props.navigation.addListener('willFocus', async () => {
+        await this.props.dispatch(getBooks());
+        this.setState({
+          books: this.props.book,
+        })
+      }
+      )]
   };
 
-  componentWillMount() {
-    setTimeout(() => {
-      this.setState({ isLoading: false })
-    }, 500)
-
-  }
+  componentWillUnmount = () => {
+    this.subs.forEach(sub => {
+      sub.remove();
+    });
+  };
 
   render() {
     return (
       <ScrollView>
-        <NavigationEvents
-          onWillFocus={() => this.props.dispatch(getBooks())}
-        />
-        {this.state.isLoading ?
-          <ActivityIndicator size='large' color='black' />
-          :
-          <View>
-            <StatusBar backgroundColor='#f0f0f0' barStyle='dark-content' />
+        {this.props.book.isFulfilled == false ?
+          (
+            <View style={{ height: 500, width: '100%', flex: 1, justifyContent: 'center', alignContent: 'center' }}>
+              <ActivityIndicator
+                color='black'
+                size="large"
+                style={styles.activityIndicator} />
+            </View>
+          ) :
+          (<View>
+            <StatusBar
+              backgroundColor='#f0f0f0'
+              barStyle='dark-content' />
             <View style={styles.searchBar}>
               <TextInput style={{ marginLeft: 10, marginRight: 25, }}
-                placeholder="Search..." />
+                placeholder='Search...' />
             </View>
-
             <View style={styles.FlatList}>
               <FlatList
                 data={this.props.book.bookList}
@@ -60,7 +68,7 @@ class HomeScreen extends Component {
                 }>
               </FlatList>
             </View>
-          </View>}
+          </View>)}
       </ScrollView>
     );
   }
@@ -121,7 +129,7 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     paddingBottom: 2,
-    backgroundColor: '#003994',
+    backgroundColor: 'brown',
     position: 'absolute',
     zIndex: 1,
     width: 145,
@@ -132,7 +140,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: 'white',
     textAlign: 'center',
-    backgroundColor: 'grey',
+    backgroundColor: 'green',
     position: 'absolute',
     zIndex: 1,
     width: 145,
@@ -143,5 +151,10 @@ const styles = StyleSheet.create({
     width: 145,
     height: 215,
     borderRadius: 10,
+  },
+  activityIndicator: {
+    flex: 1,
+    justifyContent: 'center',
+    alignContent: 'center',
   }
 })

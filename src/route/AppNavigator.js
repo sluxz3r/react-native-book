@@ -13,7 +13,7 @@ import AddScreen from '../screens/Add';
 import BorrowScreen from '../screens/Borrow';
 
 import ProfileScreen from '../screens/Profile';
-// import Auth from '../screens/Auth';
+import Auth from '../screens/Auth';
 import LoginScreen from '../screens/Login';
 import RegisterScreen from '../screens/Register';
 import BorrowList from '../screens/BorrowList';
@@ -66,6 +66,7 @@ const BorrowStack = createStackNavigator(
 
 const ProfileStack = createStackNavigator(
   {
+    Auth: {screen : Auth},
     Login: {screen: LoginScreen},
     Profile: { screen: ProfileScreen },
     Register: {screen: RegisterScreen},

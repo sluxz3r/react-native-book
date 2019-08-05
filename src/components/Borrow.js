@@ -145,11 +145,14 @@ const styles = StyleSheet.create({
   },
   borrow: {
     backgroundColor: '#df42ff',
+    marginTop: 8,
+    color: 'white',
     width: 140,
     height: 30,
-    marginTop: 8,
     justifyContent: "center",
     alignItems: "center",
+    borderRadius: 30,
+    elevation: 5,
   },
   des: {
     marginTop: 0,

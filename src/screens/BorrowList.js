@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { userBorrows } from '../redux/actions/history';
-import { NavigationEvents } from 'react-navigation';
 import moment from 'moment';
 import { StyleSheet, View, Text, Image, ScrollView, ActivityIndicator, FlatList, TouchableOpacity } from 'react-native';
 
@@ -17,14 +16,35 @@ class BorrowList extends Component {
     this.setState({
       history: this.props.history,
     });
+    this.subs = [
+      this.props.navigation.addListener('willFocus', async () => {
+        await this.props.dispatch(userBorrows(user_ktp, userid, token));
+        this.setState({
+          history: this.props.history,
+        })
+      }
+      )]
+  };
+
+  componentWillUnmount = () => {
+    this.subs.forEach(sub => {
+      sub.remove();
+    });
   };
   render() {
     return (
       <ScrollView>
+        {this.props.history.isFulfilled == false ?
+          (
+            <View style={{ height: 500, width: '100%', flex: 1, justifyContent: 'center', alignContent: 'center' }}>
+              <ActivityIndicator
+                color='black'
+                size="large"
+                style={styles.activityIndicator} />
+            </View>
+          ) :
+          (
         <View>
-        <NavigationEvents
-            onWillFocus={payload => this.props.dispatch(userBorrows(this.props.navigation.state.params.ktp), payload)}
-          />
           <View style={{ flex: 1, alignItems: 'center' }}>
             <Text>Borrow List!</Text>
           </View>
@@ -54,6 +74,7 @@ class BorrowList extends Component {
             </FlatList>
           </View>
         </View>
+          )}
       </ScrollView>
     );
   }
