@@ -17,13 +17,12 @@ class Auth extends Component {
         })
     }
     render() {
-        console.log(this.state.token)
         return (
             <ScrollView>
                 <View behavior="padding"
                     style={styles.Wrapper}>
                     <NavigationEvents
-                        onWillFocus={() => AsyncStorage.getItem('jwtToken').then((value) => {
+                        onWillBlur={() => AsyncStorage.getItem('jwtToken').then((value) => {
                             this.setState({ token: value })
                         })}
                     />

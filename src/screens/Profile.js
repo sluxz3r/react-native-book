@@ -80,12 +80,12 @@ class LoginScreen extends Component {
                         })}
                     />
                     <NavigationEvents
-                        onWillFocus={payload => AsyncStorage.getItem('name').then((value) => {
+                        onWillBlur={payload => AsyncStorage.getItem('name').then((value) => {
                             this.setState({ name: value })
                         })}
                     />
                     <NavigationEvents
-                        onWillFocus={payload => AsyncStorage.getItem('ktp').then((value) => {
+                        onWillBlur={payload => AsyncStorage.getItem('ktp').then((value) => {
                             this.setState({ ktp: value })
                         })}
                     />

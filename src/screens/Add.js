@@ -8,35 +8,75 @@ import {
   Text,
   TouchableOpacity,
   KeyboardAvoidingView,
+  Button,
+  Image
 } from 'react-native';
+import { withNavigation } from 'react-navigation';
 import { postBook } from '../redux/actions/book';
+import ImagePicker from 'react-native-image-picker';
 
 class AddScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       book: [],
+      filePath: null
     };
   }
+  chooseFile = () => {
+    var options = {
+      title: 'Pilih Photo BOSSSQUEE',
+      customButtons: [
+        { name: 'customOptionKey', title: 'Kustom Bos' },
+      ],
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+    ImagePicker.showImagePicker(options, response => {
+      console.log('Response = ', response);
+      if (response.didCancel) {
+        console.log('Cancel');
+        alert('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+        alert('ImagePicker Error: ' + response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+        alert(response.customButton);
+      } else {
+        let source = response;
+        this.setState({
+          filePath: source,
+        });
+      }
+    });
+  };
   render() {
-    const bookAdd = () => {
-      this.state.book.push({
-        name: this.state.name,
-        writer: this.state.writer,
-        des: this.state.des,
-        image: this.state.image,
-        fk_cat: this.state.fk_cat,
-        fk_loc: this.state.fk_loc
-      });
-
-      add() 
-
-    };
-    let add = async () => {
-      const data = this.state.book[0]
+    const _renderButton = () => (
+      dataFile = new FormData(),
+      dataFile.append('image',
+        {
+          uri: this.state.filePath.uri,
+          type: 'image/jpg',
+          name: '/'
+        }
+      ),
+      dataFile.append('name', this.state.name),
+      dataFile.append('writer', this.state.writer),
+      dataFile.append('des', this.state.des),
+      dataFile.append('fk_loc', this.state.fk_loc),
+      dataFile.append('fk_cat', this.state.fk_cat),
+      postBuku(dataFile),
+      this.props.navigation.navigate("Home")
+    )
+    let postBuku = async (data) => {
       await this.props.dispatch(postBook(data))
+        .then(() => {
+          this.props.navigation.navigate("Home")
+        })
     };
-
     return (
       <KeyboardAvoidingView>
         <ScrollView>
@@ -56,12 +96,20 @@ class AddScreen extends Component {
               placeholderTextColor='black'
               style={styles.inputField}
               onChangeText={val => this.setState({ 'writer': val })} />
-            <TextInput
+
+            {/* <TextInput
               placeholder='Image'
               underlineColorAndroid='black'
               placeholderTextColor='black'
               style={styles.inputField}
-              onChangeText={val => this.setState({ 'image': val })} />
+              onChangeText={val => this.setState({ 'image': val })} /> */}
+
+            <TouchableOpacity
+              style={styles.inputBox}
+              onPress={this.chooseFile.bind(this)}>
+              <Text style={{ color: 'black', height: 50, marginTop: 10, marginBottom: -20 }}>Choose Photo </Text>
+            </TouchableOpacity>
+
             <TextInput
               placeholder='Location'
               underlineColorAndroid='black'
@@ -80,7 +128,7 @@ class AddScreen extends Component {
               placeholderTextColor='black'
               style={styles.inputField}
               onChangeText={val => this.setState({ 'des': val })} />
-            <TouchableOpacity onPress={bookAdd.bind(this)} style={styles.addButton}>
+            <TouchableOpacity onPress={_renderButton} style={styles.addButton}>
               <Text style={{ color: 'white', fontSize: 18 }}>Donate</Text>
             </TouchableOpacity>
           </View>
@@ -94,7 +142,7 @@ const mapStateToProps = state => {
     book: state.book
   };
 };
-export default connect(mapStateToProps)(AddScreen);
+export default connect(mapStateToProps)(withNavigation(AddScreen));
 
 const styles = StyleSheet.create({
   inputField: {

@@ -8,11 +8,6 @@ class LoginScreen extends Component {
     state = {
         data: [],
         user: [],
-        userid: null,
-        name: '',
-        ktp: '',
-        email: '',
-        token: '',
     };
     constructor(props) {
         super(props);
@@ -40,9 +35,6 @@ class LoginScreen extends Component {
                     );
                 })
         };
-
-
-        console.log("KTP", this.state.data[0])
         return (
             <ScrollView>
                 <View behavior="padding"
