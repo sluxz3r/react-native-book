@@ -12,39 +12,33 @@ import {
   Image
 } from 'react-native';
 import { withNavigation } from 'react-navigation';
-import { postBook } from '../redux/actions/book';
+import { postBook } from '../redux/actions/post';
 import ImagePicker from 'react-native-image-picker';
 
 class AddScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      book: [],
+      post: [],
       filePath: null
     };
   }
+  onClickListener = (viewId) => {
+    Alert.alert("Alert", "Button pressed " + viewId);
+  }
   chooseFile = () => {
     var options = {
-      title: 'Pilih Photo BOSSSQUEE',
-      customButtons: [
-        { name: 'customOptionKey', title: 'Kustom Bos' },
-      ],
+      title: 'Choose Picture',
       storageOptions: {
         skipBackup: true,
-        path: 'images',
+        path: 'images'
       },
     };
     ImagePicker.showImagePicker(options, response => {
-      console.log('Response = ', response);
       if (response.didCancel) {
-        console.log('Cancel');
         alert('User cancelled image picker');
       } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
         alert('ImagePicker Error: ' + response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-        alert(response.customButton);
       } else {
         let source = response;
         this.setState({
@@ -53,30 +47,25 @@ class AddScreen extends Component {
       }
     });
   };
+
   render() {
-    const _renderButton = () => (
+    const bookAdd = () => (
       dataFile = new FormData(),
       dataFile.append('image',
         {
           uri: this.state.filePath.uri,
           type: 'image/jpg',
-          name: '/'
+          name: 'bebas'
         }
       ),
       dataFile.append('name', this.state.name),
       dataFile.append('writer', this.state.writer),
-      dataFile.append('des', this.state.des),
       dataFile.append('fk_loc', this.state.fk_loc),
+      dataFile.append('des', this.state.des),
       dataFile.append('fk_cat', this.state.fk_cat),
-      postBuku(dataFile),
-      this.props.navigation.navigate("Home")
-    )
-    let postBuku = async (data) => {
-      await this.props.dispatch(postBook(data))
-        .then(() => {
-          this.props.navigation.navigate("Home")
-        })
-    };
+      this.props.dispatch(postBook(dataFile))
+      .then(this.props.navigation.navigate('home'))
+  )
     return (
       <KeyboardAvoidingView>
         <ScrollView>
@@ -128,7 +117,7 @@ class AddScreen extends Component {
               placeholderTextColor='black'
               style={styles.inputField}
               onChangeText={val => this.setState({ 'des': val })} />
-            <TouchableOpacity onPress={_renderButton} style={styles.addButton}>
+            <TouchableOpacity onPress={bookAdd.bind(this)} style={styles.addButton}>
               <Text style={{ color: 'white', fontSize: 18 }}>Donate</Text>
             </TouchableOpacity>
           </View>
@@ -139,7 +128,7 @@ class AddScreen extends Component {
 }
 const mapStateToProps = state => {
   return {
-    book: state.book
+    post: state.post
   };
 };
 export default connect(mapStateToProps)(withNavigation(AddScreen));

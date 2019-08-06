@@ -1,9 +1,10 @@
 import axios from 'axios';
+const url = 'https://sluxzer-library.herokuapp.com';
 
 export const userBorrows = (user_ktp, userid, token) => {
   return {
     type: 'USER_BORROW',
-    payload: axios.get(`http://192.168.6.199:6969/lah/user/${user_ktp}`,
+    payload: axios.get(`${url}/lah/user/${user_ktp}`,
     {
       headers: {
         "authorization": "x-control-user",

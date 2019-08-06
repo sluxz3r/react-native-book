@@ -1,10 +1,11 @@
 import axios from 'axios';
+const url = 'https://sluxzer-library.herokuapp.com'
 import {AsyncStorage} from 'react-native';
 
 export const allBorrow = () => {
   return {
     type: 'ALL_BORROWED',
-    payload: axios.get(`http://192.168.6.199:6969/borrow/lah/`,
+    payload: axios.get(`${url}/borrow/lah/`,
     {
       headers: {
         "authorization": "x-control-user",
@@ -19,7 +20,7 @@ export const userBorrows = (user_ktp, userid, token) => {
   console.log("action" , userid, token)
   return {
     type: 'USER_BORROW',
-    payload: axios.get(`http://192.168.6.199:6969/lah/user/${user_ktp}`,
+    payload: axios.get(`${url}/lah/user/${user_ktp}`,
     {
       headers: {
         "authorization": "x-control-user",
@@ -33,20 +34,20 @@ export const userBorrows = (user_ktp, userid, token) => {
 export const getBorrows = (bookid) => {
   return {
     type: 'GET_BORROW',
-    payload: axios.get(`http://192.168.6.199:6969/lah/${bookid}`)
+    payload: axios.get(`${url}/lah/${bookid}`)
   }
 }
 
 export const postBorrow = (data) => {
   return {
     type: 'POST_BORROW',
-    payload: axios.post(`http://192.168.6.199:6969/borrow`, data)
+    payload: axios.post(`${url}/borrow`, data)
   }
 }
 
 export const updateBorrow = (data, bookid) => {
   return {
     type: 'UPDATE_BORROW',
-    payload: axios.patch(`http://192.168.6.199:6969/borrow/${bookid}`, data),
+    payload: axios.patch(`${url}/borrow/${bookid}`, data),
   }
 };
