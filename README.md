@@ -15,9 +15,7 @@ Just Register i dont have an account and Login after that. You will get a beauti
 
 ### Released APK
 
-- If u want to test it out download [here](https://drive.google.com/file/d/13uhkvvvySy9fpaKxZp6x3aPksGXgpJYm/view)
-
-### APP SCREENSHOTS
+- If u want to test it out download [here](https://drive.google.com/file/d/1-32RCsuYK56lfKgGeawDJnp_K8GKjM_j/view) 
 <p align="center">
     <img src="https://res.cloudinary.com/dbhwvh1mf/image/upload/v1565320989/wa/WhatsApp_Image_2019-08-09_at_10.16.37_yyfypy.jpg" width=400 align="center" style="margin-right:20px"/>
     <img src="https://res.cloudinary.com/dbhwvh1mf/image/upload/v1565320989/wa/WhatsApp_Image_2019-08-09_at_10.16.37_1_p8fo8u.jpg" width=400 align="center" style="margin-right:20px"/>
