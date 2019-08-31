@@ -46,8 +46,8 @@ Lib App is an app that help people to read some book of you want. You can Regist
 </div>
 
 ## Release APK
-<a href="https://drive.google.com/file/d/1JTKEjqpM1UHG4Y6Q6zSyIOQ-H8Jby9As/view?usp=sharing">
-  <img src="https://img.shields.io/badge/Download%20on%20the-Google%20Drive-blue.svg?style=popout&logo=google-drive"/>
+<a href="https://www.mediafire.com/file/k2yeq09zeux99jv/ARIE-BookApp.apk/file">
+  <img src="https://img.shields.io/badge/Download%20on%20the-mediafire-blue.svg?style=popout&logo="/>
 </a>
 
 ## Related Project (Backend)
